@@ -1,0 +1,53 @@
+name: TF
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - ca-certificates=2022.6.15=h5b45459_0
+  - certifi=2022.6.15=py38haa244fe_0
+  - cudatoolkit=11.2.2=h933977f_10
+  - cudnn=8.1.0.77=h3e0f4f4_0
+  - openssl=1.1.1q=h8ffe710_0
+  - pip=22.1.2=py38haa95532_0
+  - python=3.8.13=h6244533_0
+  - python_abi=3.8=2_cp38
+  - sqlite=3.39.2=h2bbff1b_0
+  - vc=14.2=h21ff451_1
+  - vs2015_runtime=14.27.29016=h5e58377_2
+  - wincertstore=0.2=py38haa95532_2
+  - pip:
+    - astunparse==1.6.3
+    - flatbuffers==2.0
+    - gast==0.5.3
+    - google-pasta==0.2.0
+    - h5py==3.7.0
+    - imageio==2.21.1
+    - joblib==1.1.0
+    - keras-preprocessing==1.1.2
+    - libclang==14.0.6
+    - networkx==2.8.5
+    - opencv-python==4.6.0.66
+    - opt-einsum==3.3.0
+    - protobuf==3.19.4
+    - pyasn1==0.4.8
+    - pyasn1-modules==0.2.8
+    - pywavelets==1.3.0
+    - rsa==4.9
+    - scikit-image==0.19.3
+    - scikit-learn==1.1.2
+    - setuptools==65.0.1
+    - six==1.16.0
+    - sklearn==0.0
+    - tensorboard==2.10.0
+    - tensorboard-data-server==0.6.1
+    - tensorboard-plugin-wit==1.8.1
+    - tensorflow-addons==0.17.1
+    - termcolor==1.1.0
+    - threadpoolctl==3.1.0
+    - tifffile==2022.8.12
+    - typeguard==2.13.3
+    - urllib3==1.26.11
+    - wheel==0.37.1
+    - wrapt==1.14.1
+    - zipp==3.8.1
+prefix: C:\Users\Berge001\anaconda3\envs\TF
