@@ -22,3 +22,4 @@
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
+- [ ] Provide download links to pretrained models.
