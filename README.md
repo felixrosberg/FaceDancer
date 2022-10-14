@@ -19,5 +19,5 @@
 >transfer, while having significantly better pose preservation
 >than most of the previous methods.
 ### TODO:
-- [] Add complete code for calculating IFSR.
-- [] Add code for all evaluation steps.
+- [ ] Add complete code for calculating IFSR.
+- [ ] Add code for all evaluation steps.
