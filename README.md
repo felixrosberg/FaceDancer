@@ -25,9 +25,12 @@
 ![result_matrix](sdfsd.png)
 
 ## Requirements
-This project was implemented in TensorFlow 2.X. For evaluation we used models implemented in both TensorFlow and PyTorch (e.g CosFace from [InsightFace]([https://pages.github.com/](https://github.com/deepinsight/insightface/blob/master/recognition/arcface_torch)).
+This project was implemented in TensorFlow 2.X. For evaluation we used models implemented in both TensorFlow and PyTorch (e.g CosFace from [InsightFace](https://github.com/deepinsight/insightface/blob/master/recognition/arcface_torch)).
 
-You can find the exported enviroment in enviroment.yml.
+You can find the exported enviroment in enviroment.yml. Run following command to install the tensorflow enviroment:
+```shell
+conda env create -f environment.yml
+```
 
 ## How to Run
 ```shell
