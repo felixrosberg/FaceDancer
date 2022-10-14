@@ -19,6 +19,7 @@
 > other state-of-the-art networks in terms of identity
 > transfer, while having significantly better pose preservation
 > than most of the previous methods.
+![overview](overview_rebuttal.png)
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
