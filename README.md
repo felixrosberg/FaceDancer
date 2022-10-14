@@ -19,7 +19,7 @@
 > other state-of-the-art networks in terms of identity
 > transfer, while having significantly better pose preservation
 > than most of the previous methods.
-![overview](facedancer_overview.png)
+![overview](facedancer_ov.png)
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
