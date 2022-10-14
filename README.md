@@ -15,8 +15,8 @@
 > in the target face, while still transferring the identity
 > of the source face with high fidelity. We conduct extensive
 > quantitative and qualitative experiments on various
-> datasets and show that the proposed FaceDancer outper
-> forms other state-of-the-art networks in terms of identity
+> datasets and show that the proposed FaceDancer outperforms
+> other state-of-the-art networks in terms of identity
 > transfer, while having significantly better pose preservation
 > than most of the previous methods.
 ### TODO:
