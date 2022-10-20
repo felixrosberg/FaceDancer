@@ -9,6 +9,8 @@ from PIL import Image
 from scipy.ndimage import gaussian_filter
 
 from tensorflow.keras.models import load_model
+from networks.layers import AdaIN, AdaptiveAttention
+from tensorflow_addons.layers import InstanceNormalization
 from retinaface.models import *
 
 arcface_src = np.array(
@@ -35,7 +37,6 @@ def get_mask_box():
 
 
 def swap(opt):
-
     gpus = tf.config.experimental.list_physical_devices('GPU')
     tf.config.set_visible_devices(gpus[opt.device_id], 'GPU')
 
@@ -47,8 +48,9 @@ def swap(opt):
                                             "ClassHead": ClassHead})
     ArcFace = load_model(opt.arcface_path)
 
-    G = get_generator(up_types=opt.up_types, mapping_depth=opt.mapping_depth, mapping_size=opt.mapping_size)
-    G.load_weights(opt.chkp_dir + opt.log_name + "/gen/" + "gen" + '_' + str(opt.load) + '.h5')
+    G = load_model(opt.facedancer_path, custom_objects={"AdaIN": AdaIN,
+                                                        "AdaptiveAttention": AdaptiveAttention,
+                                                        "InstanceNormalization": InstanceNormalization})
 
     # Prepare to load video
     cap = cv2.VideoCapture(opt.vid_path)
@@ -157,6 +159,9 @@ if __name__ == '__main__':
     parser.add_argument('--arcface_path', type=str,
                         default="../arcface_model/arcface/ArcFace-Res50.h5",
                         help='path to arcface model. Used to extract identity from source.')
+    parser.add_argument('--facedancer_path', type=str,
+                        default="../pretrained/FaceDancer-C.h5",
+                        help='path to pretrained FaceDancer model.')
 
     # video / image data to use
     parser.add_argument('--vid_path', type=str,
