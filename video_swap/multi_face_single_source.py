@@ -160,7 +160,7 @@ if __name__ == '__main__':
                         default="../arcface_model/arcface/ArcFace-Res50.h5",
                         help='path to arcface model. Used to extract identity from source.')
     parser.add_argument('--facedancer_path', type=str,
-                        default="../pretrained/FaceDancer-C.h5",
+                        default="../pretrained/FaceDancer-HQ.h5",
                         help='path to pretrained FaceDancer model.')
 
     # video / image data to use
