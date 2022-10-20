@@ -1,0 +1,210 @@
+from utils.utils import norm_crop, estimate_norm, inverse_estimate_norm, transform_landmark_points, get_lm
+from networks.generator import get_generator
+import numpy as np
+import cv2
+import argparse
+
+from tqdm import tqdm
+from PIL import Image
+from scipy.ndimage import gaussian_filter
+
+from tensorflow.keras.models import load_model
+from retinaface.models import *
+
+arcface_src = np.array(
+    [[38.2946, 51.6963], [73.5318, 51.5014], [56.0252, 71.7366],
+     [41.5493, 92.3655], [70.7299, 92.2041]],
+    dtype=np.float32)
+
+arcface_src = np.expand_dims(arcface_src, axis=0)
+
+
+def get_mask(im, face_segmentor):
+    blend_mask = face_segmentor.predict(np.expand_dims(tf.image.resize(im, [128, 128]).numpy() / 255.0, axis=0))[
+        0]
+    blend_mask = gaussian_filter(cv2.resize(blend_mask, (256, 256)), sigma=5)
+
+    return np.expand_dims(blend_mask, axis=-1)
+
+
+def get_mask_box():
+    blend_mask = np.ones(shape=(256, 256, 3))
+    blend_mask = gaussian_filter(cv2.resize(blend_mask, (256, 256)), sigma=5)
+
+    return np.expand_dims(blend_mask, axis=-1)
+
+
+def swap(opt):
+
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    tf.config.set_visible_devices(gpus[opt.device_id], 'GPU')
+
+    RetinaFace = load_model(opt.retina_path,
+                            custom_objects={"FPN": FPN,
+                                            "SSH": SSH,
+                                            "BboxHead": BboxHead,
+                                            "LandmarkHead": LandmarkHead,
+                                            "ClassHead": ClassHead})
+    ArcFace = load_model(opt.arcface_path)
+
+    G = get_generator(up_types=opt.up_types, mapping_depth=opt.mapping_depth, mapping_size=opt.mapping_size)
+    G.load_weights(opt.chkp_dir + opt.log_name + "/gen/" + "gen" + '_' + str(opt.load) + '.h5')
+
+    # Prepare to load video
+    cap = cv2.VideoCapture(opt.vid_path)
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    _, image = cap.read()
+    im = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    im_h, im_w, _ = im.shape
+    im_shape = (im_w, im_h)
+    print("Video resolution:", im_shape)
+    if not opt.downsample:
+        detection_scale = im_w // 640 if im_w > 640 else 1
+    else:
+        detection_scale = (im_w // 2) // 640 if (im_w // 2) > 640 else 1
+
+    vid_out = None
+    print(opt.output)
+    if opt.compare:
+        vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'MP4V'),
+                                  int(cap.get(cv2.CAP_PROP_FPS)),
+                                  (im_shape[0] * 2,
+                                   im_shape[1]))
+    else:
+        vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'MP4V'),
+                                  int(cap.get(cv2.CAP_PROP_FPS)),
+                                  (im_shape[0],
+                                   im_shape[1]))
+
+    source = np.asarray(Image.open(opt.swap_source).convert('RGB'))
+    if opt.align_source:
+        source_a = RetinaFace(np.expand_dims(source, axis=0)).numpy()[0]
+        source_h, source_w, _ = source.shape
+        source_lm = get_lm(source_a, source_w, source_h)
+        source_aligned = norm_crop(source, source_lm, image_size=112)
+    else:
+        source_aligned = source
+    source_z = ArcFace.predict(np.expand_dims(tf.image.resize(source_aligned, [112, 112]) / 255.0, axis=0))
+
+    blend_mask_base = np.zeros(shape=(256, 256, 1))
+    blend_mask_base[100:240, 32:224] = 1
+    blend_mask_base = gaussian_filter(blend_mask_base, sigma=7)
+
+    for fno in tqdm(range(0, int(total_frames * opt.length), opt.sample_rate)):
+        # read frame
+        cap.set(cv2.CAP_PROP_POS_FRAMES, fno)
+        _, image = cap.read()
+
+        im = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        im_h, im_w, _ = im.shape
+        im_h = im_h // 2
+        im_w = im_w // 2
+        if opt.downsample:
+            im = cv2.resize(im, (im_w, im_h))
+        im_shape = (im_w, im_h)
+
+        faces = RetinaFace(np.expand_dims(cv2.resize(im,
+                                                     (im_w // detection_scale,
+                                                      im_h // detection_scale)), axis=0)).numpy()
+
+        total_img = im / 255.0
+        for annotation in faces:
+            lm_align = np.array([[annotation[4] * im_w, annotation[5] * im_h],
+                                 [annotation[6] * im_w, annotation[7] * im_h],
+                                 [annotation[8] * im_w, annotation[9] * im_h],
+                                 [annotation[10] * im_w, annotation[11] * im_h],
+                                 [annotation[12] * im_w, annotation[13] * im_h]],
+                                dtype=np.float32)
+
+            # align the detected face
+            M, pose_index = estimate_norm(lm_align, 256, "arcface", shrink_factor=1.0)
+            im_aligned = cv2.warpAffine(im, M, (256, 256), borderValue=0.0)
+
+            # face swap
+            changed_face_cage = G.predict([np.expand_dims((im_aligned - 127.5) / 127.5, axis=0),
+                                           source_z])
+            changed_face = (changed_face_cage[0] + 1) / 2
+
+            # get inverse transformation landmarks
+            transformed_lmk = transform_landmark_points(M, lm_align)
+
+            # warp image back
+            iM, _ = inverse_estimate_norm(lm_align, transformed_lmk, 256, "arcface", shrink_factor=1.0)
+            iim_aligned = cv2.warpAffine(changed_face, iM, im_shape, borderValue=0.0)
+
+            # blend swapped face with target image
+            blend_mask = cv2.warpAffine(blend_mask_base, iM, im_shape, borderValue=0.0)
+            blend_mask = np.expand_dims(blend_mask, axis=-1)
+            total_img = (iim_aligned * blend_mask + total_img * (1 - blend_mask))
+
+        if opt.compare:
+            total_img = np.concatenate((im / 255.0, total_img), axis=1)
+            total_img[-112:, :112, :] = source_aligned / 255.0
+
+        vid_out.write(cv2.cvtColor((np.clip(total_img * 255, 0, 255)).astype('uint8'), cv2.COLOR_BGR2RGB))
+
+    vid_out.release()
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    # Video/Image necessary models
+    parser.add_argument('--retina_path', type=str,
+                        default="../retinaface/retinaface_res50.h5",
+                        help='path to retinaface model.')
+    parser.add_argument('--arcface_path', type=str,
+                        default="../arcface_model/arcface/arc_res50.h5",
+                        help='path to arcface model. Used to extract identity from source.')
+
+    # video / image data to use
+    parser.add_argument('--vid_path', type=str,
+                        default="I:/Datasets/face_forensics/original_sequences/youtube/c23/videos/191.mp4",
+                        help='path to video to face swap')
+    parser.add_argument('--swap_source', type=str,
+                        default="D:/fixed_forensic_v2/088/_4.png",
+                        help='path to source face for video sswap.')
+    parser.add_argument('--output', type=str,
+                        default="outputs/191_to_88_hq.mp4",
+                        help='path to output manipulated video')
+
+    # video arguments
+    parser.add_argument('--compare', type=bool,
+                        default=True,
+                        help='If true, concatenates the frame with the manipulated frame')
+    parser.add_argument('--sample_rate', type=int,
+                        default=1,
+                        help='Sample rate, 1 would include all frames, 2 would only process every 2.')
+    parser.add_argument('--length', type=float,
+                        default=1,
+                        help='0 to 1. How much of the video to process.')
+    parser.add_argument('--align_source', type=bool,
+                        default=True,
+                        help='If true, detects the face and aligns it before extracting identity.')
+
+    # model definition
+    parser.add_argument('--z_id_size', type=int, default=512,
+                        help="size (dimensionality) of the identity vector")
+    parser.add_argument('--mapping_depth', type=int, default=4,
+                        help="depth of the mapping network")
+    parser.add_argument('--mapping_size', type=int, default=256,
+                        help="size of the fully connected layers in the mapping network")
+    parser.add_argument('--up_types', type=list,
+                        default=['no_skip', 'no_skip', 'affa', 'affa', 'affa', 'concat'],
+                        help='what kind of decooding blocks to use')
+
+    # data and devices
+    parser.add_argument('--device_id', type=int, default=1,
+                        help='which device to use')
+    parser.add_argument('--log_name', type=str, default='facedancer',
+                        help='name of the run, change this to track several experiments')
+    parser.add_argument('--load', type=int,
+                        default=30,
+                        help='int of number to load checkpoint weights.')
+    parser.add_argument('--chkp_dir', type=str, default='../checkpoints/',
+                        help='checkpoint directory (will use same name as log_name!)')
+
+    opt = parser.parse_args()
+
+    swap(opt)
