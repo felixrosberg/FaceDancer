@@ -188,17 +188,6 @@ if __name__ == '__main__':
                         default=True,
                         help='If true, detects the face and aligns it before extracting identity.')
 
-    # model definition
-    parser.add_argument('--z_id_size', type=int, default=512,
-                        help="size (dimensionality) of the identity vector")
-    parser.add_argument('--mapping_depth', type=int, default=4,
-                        help="depth of the mapping network")
-    parser.add_argument('--mapping_size', type=int, default=256,
-                        help="size of the fully connected layers in the mapping network")
-    parser.add_argument('--up_types', type=list,
-                        default=['no_skip', 'no_skip', 'affa', 'affa', 'affa', 'concat'],
-                        help='what kind of decooding blocks to use')
-
     # data and devices
     parser.add_argument('--device_id', type=int, default=1,
                         help='which device to use')
