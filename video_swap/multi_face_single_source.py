@@ -152,21 +152,21 @@ if __name__ == '__main__':
 
     # Video/Image necessary models
     parser.add_argument('--retina_path', type=str,
-                        default="../retinaface/retinaface_res50.h5",
+                        default="../retinaface/RetinaFace-Res50.h5",
                         help='path to retinaface model.')
     parser.add_argument('--arcface_path', type=str,
-                        default="../arcface_model/arcface/arc_res50.h5",
+                        default="../arcface_model/arcface/ArcFace-Res50.h5",
                         help='path to arcface model. Used to extract identity from source.')
 
     # video / image data to use
     parser.add_argument('--vid_path', type=str,
-                        default="I:/Datasets/face_forensics/original_sequences/youtube/c23/videos/191.mp4",
+                        default="C:/path/to/video.mp4",
                         help='path to video to face swap')
     parser.add_argument('--swap_source', type=str,
-                        default="D:/fixed_forensic_v2/088/_4.png",
-                        help='path to source face for video sswap.')
+                        default="C:/path/to/source_face.png",
+                        help='path to source face for video swap.')
     parser.add_argument('--output', type=str,
-                        default="outputs/191_to_88_hq.mp4",
+                        default="outputs/swapped_video.mp4",
                         help='path to output manipulated video')
 
     # video arguments
