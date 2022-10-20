@@ -157,7 +157,7 @@ if __name__ == '__main__':
                         default="../retinaface/RetinaFace-Res50.h5",
                         help='path to retinaface model.')
     parser.add_argument('--arcface_path', type=str,
-                        default="../arcface_model/arcface/ArcFace-Res50.h5",
+                        default="../arcface_model/ArcFace-Res50.h5",
                         help='path to arcface model. Used to extract identity from source.')
     parser.add_argument('--facedancer_path', type=str,
                         default="../pretrained/FaceDancer-HQ.h5",
