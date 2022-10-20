@@ -20,9 +20,9 @@
 > transfer, while having significantly better pose preservation
 > than most of the previous methods.
 
-![overview](facedancer_ov.png)
+![overview](assets/facedancer_ov.png)
 
-![result_matrix](sdfsd.png)
+![result_matrix](assets/result_matrix.png)
 
 ## Requirements
 This project was implemented in TensorFlow 2.X. For evaluation we used models implemented in both TensorFlow and PyTorch (e.g CosFace from [InsightFace](https://github.com/deepinsight/insightface/blob/master/recognition/arcface_torch)).
