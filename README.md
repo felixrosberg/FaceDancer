@@ -33,7 +33,7 @@ conda env create -f environment.yml
 ```
 
 ## How to Run
-First you need to download the pretrained ArcFace [here](https://drive.google.com/drive/folders/1z2-346FHvh3U85CEbtrjVbCbY2FyYwxt?usp=sharing) (both arc_res50.h5 and arc_percept_res50.h5) and RetinaFace [here](https://drive.google.com/drive/folders/1MhEwzpgJaD4zEQbeL9O-tj0Pu3hjw3En?usp=sharing). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://drive.google.com/drive/folders/159UscBao617Oe7k_Lq9AQ1S-XoHMVFGU?usp=sharing)(coming soon... ). Put the ArcFace models inside the /arcface_model/ directory, put the RetinaFace model inside the /retinaface/ directory and put the weights (e.g. gen_xx.h5) and the model strucutre json (e.g. gen.json) inside /checkpoints/log_name*/gen/.
+First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both arc_res50.h5 and arc_percept_res50.h5) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer)(coming soon... ). Put the ArcFace models inside the /arcface_model/ directory, put the RetinaFace model inside the /retinaface/ directory and put the weights (e.g. gen_xx.h5) and the model strucutre json (e.g. gen.json) inside /checkpoints/log_name*/gen/.
 Note that currently, the face swapping script demands you choose a checkpoint folder (e.g checkpoints) and the *log_name (e.g facedancer) and specify this in the arguments.
 ```shell
 python run stuff
