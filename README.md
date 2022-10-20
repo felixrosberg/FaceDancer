@@ -33,10 +33,16 @@ conda env create -f environment.yml
 ```
 
 ## How to Run
-First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both arc_res50.h5 and arc_percept_res50.h5) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer)(coming soon... ). Put the ArcFace models inside the /arcface_model/ directory, put the RetinaFace model inside the /retinaface/ directory and put the weights (e.g. gen_xx.h5) and the model strucutre json (e.g. gen.json) inside /checkpoints/log_name*/gen/.
-Note that currently, the face swapping script demands you choose a checkpoint folder (e.g checkpoints) and the *log_name (e.g facedancer) and specify this in the arguments.
+First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both ArcFace-Res50.h5 and ArcFacePerceptual-Res50.h5 for training) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer)(coming soon... ).
+- Put the ArcFace models inside the /arcface_model/ directory.
+- Put the RetinaFace model inside the /retinaface/ directory.
+
+Note: You can put the ArcFace + RetinaFace models where ever you like, but you have to specify the path in the arguments then, as current default arguments points to the aforementioned directories.
+- Put the FaceDancer model somewhere, e.g. pretrained/FaceDancer-C.h5.
+
+To face swap all faces with one source run:
 ```shell
-python run stuff
+python video_swap/multi_face_single_source.py --facedancer_path path/to/facedancer.h5 --vid_path path/to/video.mp4 --swap_source path/to/source_face.png
 ```
 
 ### TODO:
