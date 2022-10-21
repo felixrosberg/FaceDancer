@@ -32,8 +32,9 @@ You can find the exported enviroment in enviroment.yml. Run following command to
 conda env create -f environment.yml
 ```
 
-## How to Run
-First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both ArcFace-Res50.h5 and ArcFacePerceptual-Res50.h5 for training) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer)(coming soon... ).
+## How to Face Swap Video
+and ArcFacePerceptual-Res50.h5 for training
+First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (only ArcFace-Res50.h5 is needed for swapping) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer)(coming soon... ).
 - Put the ArcFace models inside the /arcface_model/ directory.
 - Put the RetinaFace model inside the /retinaface/ directory.
 
@@ -44,6 +45,37 @@ To face swap all faces with one source run:
 ```shell
 python video_swap/multi_face_single_source.py --facedancer_path path/to/facedancer.h5 --vid_path path/to/video.mp4 --swap_source path/to/source_face.png
 ```
+
+This will output a manipulated video named swapped_video.mp4
+
+## How to Preprocess Data
+
+### Aligning Faces
+Before you can train FaceDancer you must make sure the data is properly aligned and processed. Learning capabilites is crippled without this step, if not impossible. The expected folder structure is DATASET/subfolders/im_0, ..., im_x. If using an image dataset not divided into subfolders you can put the DATASET folder inside a parent folder like this: PARENT_FOLDER/DATASET/im_0, ..., im_x. Then specify the PARENT_FOLDER as the --data_dir and the DATASET will be treated as a subfolder. This step requires the pretrained RetinaFace for face detection and facial landmark extraction.
+
+To align the faces run:
+```shell
+python dataset/crop_align.py --data_dir path/to/DATASET --target_dir path/to/processed_DATASET
+```
+
+Remaining arguments consist of:
+- --im_size, default=256, final image size of the processed image
+- --min_size, defualt=128, threshold to ignore image with a width or height lower than min_size
+- --shrink_factor, defualt=1.0, this argument controls how much of the background to keep. Default is 1.0 which produces images appropriate as direct input into ArcFace. If the shrink factor is e.g 0.75, you must center crop the image, keeping 0.75% of the image, before inputting into ArcFace.
+- --device_id, default=0, which device to use
+
+### Sharding the Data
+This step will convert the image data to tfrecords. If using large datasets such as VGGFace2 this will take some time. However, the training code is designed around this step and it speeds up training significantly. The expected folder structure is DATASET/subfolders/im_0, ..., im_x. If using an image dataset not divided into subfolders you can put the DATASET folder inside a parent folder like this: PARENT_FOLDER/DATASET/im_0, ..., im_x. Then specify the PARENT_FOLDER as the --data_dir and the DATASET will be treated as a subfolder.
+
+To shard the data run:
+```shell
+python dataset/dataset_sharding.py --data_dir path/to/DATASET --target_dir path/to/tfrecords/dir --data_name dataset_name
+```
+
+Remaining arguments consist of:
+- --data_type, default="train", identifier for the output file names
+- --shuffle, defualt=True, where to shuffle the order of sharding the images
+- --num_shards, defualt=1000, how many shards to divide the data into
 
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
