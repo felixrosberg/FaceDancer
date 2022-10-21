@@ -22,6 +22,8 @@
 
 ![overview](assets/facedancer_ov.png)
 
+For a quick play around, you can check out a version of FaceDancer hosted on [Hugging Face](https://huggingface.co/spaces/felixrosberg/face-swap). The Space allow you to face swap images, but also try some other functionality I am currently research I plan to publish soon. For example, reconstruction attacks and adversarial defense against the reconstruction attack.
+
 ![result_matrix](assets/result_matrix.png)
 
 ## Requirements
@@ -77,7 +79,19 @@ Remaining arguments consist of:
 - --shuffle, defualt=True, where to shuffle the order of sharding the images
 - --num_shards, defualt=1000, how many shards to divide the data into
 
+## How to Train
+After you have processed and sharded all your desired datasets, you can train a version of FaceDancer. You still need to the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both ArcFace-Res50.h5 and ArcFacePerceptual-Res50 is needed). Secondly you need to the expression embedding model used for a rough estimation [here](https://huggingface.co/felixrosberg/ExpressionEmbedder). Put the .h5 files into arcface_model/arcface/ and arcface_model/expface/ respectively and you should need to specify the path in arguments. The trining scipt has the IFSR margins built-in into the default field of its argument. The training and validation data path uses a specific format: C:/path/to/tfrecords/train/DATASET-NAME_DATA-TYPE_*-of-*.records, where DATASET-NAME and DATA-TYPE is the arguments specified in the sharding. For example, DATASET-NAME=vggface2 and DATA-TYPE=train: C:/path/to/tfrecords/train/vggface2_train_*-of-*.records.
+
+To train run:
+```shell
+python train/train.py --data_dir C:/path/to/tfrecords/train/dataset_train_*-of-*.records --eval_dir C:/path/to/tfrecords/train/dataset_val_*-of-*.records
+```
+
+You can monitor the training with tensorboard. The train.py script will automatically log losses and images into logs/runs/facdancer/ unless you specify a different log directory and/or log name (facedancer is the default log name). Checkpoints will automatically be saved into checkpoints/ directory unless you specify a different directory. The checkpointing saves the model structures to .json and the weights to .h5 files. If you want the complete model in a single .h5 file you can rerun train.py with --load XX and --export True. This will save the complete model as a .h5 file in exports/facedancer/. XX is the checkpoint weight identifier, which can be found if you go to your checkpoints directory and for example, look up gen/gen_XX.h5.
+
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
 - [ ] Provide download links to pretrained models.
+- [ ] Image swap script.
+- [ ] Debugging?
