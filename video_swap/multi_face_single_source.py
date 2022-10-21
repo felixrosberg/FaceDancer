@@ -100,8 +100,6 @@ def swap(opt):
 
         im = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         im_h, im_w, _ = im.shape
-        if opt.downsample:
-            im = cv2.resize(im, (im_w, im_h))
         im_shape = (im_w, im_h)
 
         faces = RetinaFace(np.expand_dims(cv2.resize(im,
