@@ -61,10 +61,7 @@ def swap(opt):
     im_h, im_w, _ = im.shape
     im_shape = (im_w, im_h)
     print("Video resolution:", im_shape)
-    if not opt.downsample:
-        detection_scale = im_w // 640 if im_w > 640 else 1
-    else:
-        detection_scale = (im_w // 2) // 640 if (im_w // 2) > 640 else 1
+    detection_scale = (im_w // 2) // 640 if (im_w // 2) > 640 else 1
 
     vid_out = None
     print(opt.output)
@@ -187,13 +184,6 @@ if __name__ == '__main__':
     # data and devices
     parser.add_argument('--device_id', type=int, default=1,
                         help='which device to use')
-    parser.add_argument('--log_name', type=str, default='facedancer',
-                        help='name of the run, change this to track several experiments')
-    parser.add_argument('--load', type=int,
-                        default=30,
-                        help='int of number to load checkpoint weights.')
-    parser.add_argument('--chkp_dir', type=str, default='../checkpoints/',
-                        help='checkpoint directory (will use same name as log_name!)')
 
     opt = parser.parse_args()
 
