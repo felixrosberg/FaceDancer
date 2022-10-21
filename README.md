@@ -1,5 +1,6 @@
 # FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping
 ![demo_vid_0](assets/133_to_4.gif)
+\[[Arxiv](https://arxiv.org/abs/2210.10473)\]
 ## Abstract
 >In this work, we present a new single-stage method for
 >subject agnostic face swapping and identity transfer, named
@@ -80,7 +81,7 @@ Remaining arguments consist of:
 - --num_shards, defualt=1000, how many shards to divide the data into
 
 ## How to Train
-After you have processed and sharded all your desired datasets, you can train a version of FaceDancer. You still need to the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both ArcFace-Res50.h5 and ArcFacePerceptual-Res50 is needed). Secondly you need to the expression embedding model used for a rough estimation [here](https://huggingface.co/felixrosberg/ExpressionEmbedder). Put the .h5 files into arcface_model/arcface/ and arcface_model/expface/ respectively and you should need to specify the path in arguments. The trining scipt has the IFSR margins built-in into the default field of its argument. The training and validation data path uses a specific format: C:/path/to/tfrecords/train/DATASET-NAME_DATA-TYPE_*-of-*.records, where DATASET-NAME and DATA-TYPE is the arguments specified in the sharding. For example, DATASET-NAME=vggface2 and DATA-TYPE=train: C:/path/to/tfrecords/train/vggface2_train_*-of-*.records.
+After you have processed and sharded all your desired datasets, you can train a version of FaceDancer. You still need to the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both ArcFace-Res50.h5 and ArcFacePerceptual-Res50 is needed). Secondly you need to the expression embedding model used for a rough estimation [here](https://huggingface.co/felixrosberg/ExpressionEmbedder). Put the .h5 files into arcface_model/arcface/ and arcface_model/expface/ respectively and you should need to specify the path in arguments. The trining scipt has the IFSR margins built-in into the default field of its argument. The training and validation data path uses a specific format: C:/path/to/tfrecords/train/DATASET-NAME_DATA-TYPE_\*-of-\*.records, where DATASET-NAME and DATA-TYPE is the arguments specified in the sharding. For example, DATASET-NAME=vggface2 and DATA-TYPE=train: C:/path/to/tfrecords/train/vggface2_train_\*-of-\*.records.
 
 To train run:
 ```shell
