@@ -244,7 +244,7 @@ def run(opt):
     if not opt.export:
         summary_writer = tf.summary.create_file_writer(opt.log_dir + opt.log_name)
 
-    iteration_num = math.ceil(len(os.listdir(opt.unprocessed_data_dir)) / opt.batch_size)
+    iteration_num = 500000
     eval_dataset = iter(get_tf_dataset(opt.eval_dir, opt.image_size, 10, repeat=True))
 
     # begin/resume training
@@ -318,13 +318,11 @@ if __name__ == '__main__':
     parser.add_argument('--eval_dir', type=str,
                         default="C:/path/to/tfrecords/validation/vgg_ls3dx4_validation_*-of-*.records",
                         help='path to validation data set shards')
-    parser.add_argument('--unprocessed_data_dir', type=str, default="D:/vggface2/train_aligned_faceswap/",
-                        help='path to training images (used to calculate data set length)')
     parser.add_argument('--arcface_path', type=str,
-                        default="../arcface_model/arcface/arc_res50.h5",
+                        default="../arcface_model/arcface/ArcFace-Res50.h5",
                         help='path to arcface model. Used to extract identity from source.')
     parser.add_argument('--eval_model_expface', type=str,
-                        default="../arcface_model/expface/expression_encoder.h5",
+                        default="../arcface_model/expface/ExpressionEmbedder-B0.h5",
                         help='path to arcface model. Used to evaluate experssion performance.')
 
     parser.add_argument('--load', type=int,
@@ -332,7 +330,7 @@ if __name__ == '__main__':
                         help='int of number to load checkpoint weights.')
     parser.add_argument('--export', type=bool,
                         default=False,
-                        help='exports the generator to a complete h5 file.')
+                        help='exports the generator to a complete h5 file and exits the training script.')
 
     # general
     parser.add_argument('--batch_size', type=int, default=10,
