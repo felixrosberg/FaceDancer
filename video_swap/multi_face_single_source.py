@@ -100,8 +100,6 @@ def swap(opt):
 
         im = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         im_h, im_w, _ = im.shape
-        im_h = im_h // 2
-        im_w = im_w // 2
         if opt.downsample:
             im = cv2.resize(im, (im_w, im_h))
         im_shape = (im_w, im_h)
