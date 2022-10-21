@@ -20,7 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e30cc43-7237-4c41-b819-9f2b0a5003be" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/video_swap/multi_face_single_source.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_swap/multi_face_single_source.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +37,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dataset" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Berge001\PycharmProjects\FaceDancer\dataset" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="multi_face_single_source" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -91,10 +96,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2329" y="458" key="FileChooserDialogImpl" timestamp="1666269210093">
+    <state x="2329" y="458" key="FileChooserDialogImpl" timestamp="1666343342802">
       <screen x="0" y="0" width="5120" height="1400" />
     </state>
-    <state x="2329" y="458" key="FileChooserDialogImpl/0.0.5120.1400@0.0.5120.1400" timestamp="1666269210093" />
+    <state x="2329" y="458" key="FileChooserDialogImpl/0.0.5120.1400@0.0.5120.1400" timestamp="1666343342802" />
     <state width="2421" height="399" key="GridCell.Tab.0.bottom" timestamp="1666273321792">
       <screen x="0" y="0" width="5120" height="1400" />
     </state>
