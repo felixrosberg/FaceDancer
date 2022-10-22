@@ -23,7 +23,7 @@
 
 ![overview](assets/facedancer_ov.png)
 
-For a quick play around, you can check out a version of FaceDancer hosted on [Hugging Face](https://huggingface.co/spaces/felixrosberg/face-swap). The Space allow you to face swap images, but also try some other functionality I am currently research I plan to publish soon. For example, reconstruction attacks and adversarial defense against the reconstruction attack.
+For a quick play around, you can check out a version of FaceDancer hosted on [Hugging Face](https://huggingface.co/spaces/felixrosberg/face-swap). The Space allow you to face swap images, but also try some other functionality I am currently researching, which I plan to publish soon. For example, reconstruction attacks and adversarial defense against the reconstruction attacks.
 
 ![result_matrix](assets/result_matrix.png)
 
