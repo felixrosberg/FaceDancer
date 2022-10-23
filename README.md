@@ -93,6 +93,17 @@ You can monitor the training with tensorboard. The train.py script will automati
 ## PyTorch Implementation
 Currently I am working on a PyTorch version of FaceDancer. The training and network code is kind of done. Currently the behaviour compare to TensorFlow is drastically different. Some interesting notes is that the mapping network does not allow for the FaceDancer to learn its task. In current state it provides decent results with the mapping network ommited. I will post the PyTorch version as soon as these issues is diagnosed and resolved.
 
+## Citation
+If you use this repository in your work, please cite us:
+```
+@inproceedings{Rosberg2023FaceDancer,
+  title     = {FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping},
+  author    = {F. Rosberg, E. Aksoy. C. Englund, F. Alonso-Fernandez},
+  booktitle = {Proc. IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2023}
+}
+```
+
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
