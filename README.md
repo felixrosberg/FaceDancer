@@ -85,7 +85,7 @@ After you have processed and sharded all your desired datasets, you can train a 
 
 To train run:
 ```shell
-python train/train.py --data_dir C:/path/to/tfrecords/train/dataset_train_*-of-*.records --eval_dir C:/path/to/tfrecords/train/dataset_val_*-of-*.records
+python train/train.py --data_dir C:/path/to/tfrecords/train/dataset_train_*-of-*.records --eval_dir C:/path/to/tfrecords/val/dataset_val_*-of-*.records
 ```
 
 You can monitor the training with tensorboard. The train.py script will automatically log losses and images into logs/runs/facdancer/ unless you specify a different log directory and/or log name (facedancer is the default log name). Checkpoints will automatically be saved into checkpoints/ directory unless you specify a different directory. The checkpointing saves the model structures to .json and the weights to .h5 files. If you want the complete model in a single .h5 file you can rerun train.py with --load XX and --export True. This will save the complete model as a .h5 file in exports/facedancer/. XX is the checkpoint weight identifier, which can be found if you go to your checkpoints directory and for example, look up gen/gen_XX.h5.
