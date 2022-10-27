@@ -1,6 +1,6 @@
 # FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping
 ![demo_vid_0](assets/133_to_4.gif)
-\[[Arxiv](https://arxiv.org/abs/2210.10473)\] \[WACV 2025](Coming soon...)\]  \[[Video Results](https://drive.google.com/drive/folders/1hHjK0W-Oo1HD6OZb97IdSifPs4_c6NNo?usp=sharing)\]
+\[[Arxiv](https://arxiv.org/abs/2210.10473)\] \[WACV 2023](Coming soon...)\]  \[[Video Results](https://drive.google.com/drive/folders/1hHjK0W-Oo1HD6OZb97IdSifPs4_c6NNo?usp=sharing)\]
 ## Abstract
 >In this work, we present a new single-stage method for
 >subject agnostic face swapping and identity transfer, named
