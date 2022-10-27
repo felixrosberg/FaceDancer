@@ -77,14 +77,14 @@ def swap(opt):
                                    im_shape[1]))
 
     source = np.asarray(Image.open(opt.swap_source).convert('RGB'))
+    source_h, source_w, _ = source.shape
     if opt.align_source:
         source_a = RetinaFace(np.expand_dims(source, axis=0)).numpy()[0]
-        source_h, source_w, _ = source.shape
         source_lm = get_lm(source_a, source_w, source_h)
         source_aligned = norm_crop(source, source_lm, image_size=112)
     else:
-        source_aligned = source
-    source_z = ArcFace.predict(np.expand_dims(tf.image.resize(source_aligned, [112, 112]) / 255.0, axis=0))
+        source_aligned = cv2.resize(source, [112, 112])
+    source_z = ArcFace.predict(np.expand_dims(source_aligned / 255.0, axis=0))
 
     blend_mask_base = np.zeros(shape=(256, 256, 1))
     blend_mask_base[100:240, 32:224] = 1
@@ -158,10 +158,10 @@ if __name__ == '__main__':
 
     # video / image data to use
     parser.add_argument('--vid_path', type=str,
-                        default="C:/path/to/video.mp4",
+                        default="000.mp4",
                         help='path to video to face swap')
     parser.add_argument('--swap_source', type=str,
-                        default="C:/path/to/source_face.png",
+                        default="0.jpg",
                         help='path to source face for video swap.')
     parser.add_argument('--output', type=str,
                         default="outputs/swapped_video.mp4",
@@ -178,7 +178,7 @@ if __name__ == '__main__':
                         default=1,
                         help='0 to 1. How much of the video to process.')
     parser.add_argument('--align_source', type=bool,
-                        default=True,
+                        default=False,
                         help='If true, detects the face and aligns it before extracting identity.')
 
     # data and devices
