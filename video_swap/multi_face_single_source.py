@@ -36,6 +36,7 @@ def swap(opt):
     G = load_model(opt.facedancer_path, custom_objects={"AdaIN": AdaIN,
                                                         "AdaptiveAttention": AdaptiveAttention,
                                                         "InstanceNormalization": InstanceNormalization})
+    G.summary()
 
     # Prepare to load video
     cap = cv2.VideoCapture(opt.vid_path)
