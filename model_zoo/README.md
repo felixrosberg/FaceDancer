@@ -7,6 +7,7 @@
 | [FaceDancer (Config C)](https://huggingface.co/felixrosberg/FaceDancer) | 98.57          | 2.27   | 7.98  | 97.65           | 5.82   | 4.13  |
 | [FaceDancer (Config D)](https://huggingface.co/felixrosberg/FaceDancer) | 97.53          | 2.04   | 7.76  | 97.10           | 5.75   | 4.15  |
 | [FaceDancer (Config E)](https://huggingface.co/felixrosberg/FaceDancer) | 97.38          | 2.07   | 5.73  | 95.45           | 6.16   | 4.19  |
+
 \*Does not use IFSR
 
 ## Citation
