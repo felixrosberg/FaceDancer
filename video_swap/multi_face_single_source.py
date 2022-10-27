@@ -21,21 +21,6 @@ arcface_src = np.array(
 arcface_src = np.expand_dims(arcface_src, axis=0)
 
 
-def get_mask(im, face_segmentor):
-    blend_mask = face_segmentor.predict(np.expand_dims(tf.image.resize(im, [128, 128]).numpy() / 255.0, axis=0))[
-        0]
-    blend_mask = gaussian_filter(cv2.resize(blend_mask, (256, 256)), sigma=5)
-
-    return np.expand_dims(blend_mask, axis=-1)
-
-
-def get_mask_box():
-    blend_mask = np.ones(shape=(256, 256, 3))
-    blend_mask = gaussian_filter(cv2.resize(blend_mask, (256, 256)), sigma=5)
-
-    return np.expand_dims(blend_mask, axis=-1)
-
-
 def swap(opt):
     gpus = tf.config.experimental.list_physical_devices('GPU')
     tf.config.set_visible_devices(gpus[opt.device_id], 'GPU')
