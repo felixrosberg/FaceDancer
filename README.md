@@ -51,6 +51,28 @@ python video_swap/multi_face_single_source.py --facedancer_path path/to/facedanc
 
 This will output a manipulated video named swapped_video.mp4
 
+## Using the Models in Custom script
+```python
+from networks.layers import AdaptiveAttention, AdaIn
+from tensorflow_addons.layers import InstanceNormalization
+from tensorflow.keras.models import load_model
+from PIL import Image
+import numpy as np
+
+model = load_model("path/to/model.h5", custom_objects={"AdaIN": AdaIN, "AdaptiveAttention": AdaptiveAttention, "InstanceNormalization": InstanceNormalization})
+
+arcface = load_model("path/to/arcface.h5")
+
+target = np.asarray(Image.open("path/to/target_face.png").resize((256, 256)))
+source = np.asarray(Image.open("path/to/source_face.png").resize((112, 112)))
+
+source_z = arcface(np.expand_dims(source / 255.0, axis=0))
+
+face_swap = model([np.expand_dims((target - 127.5) / 127.5, axis=0), source_z]).numpy()
+```
+
+The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.
+
 ## How to Preprocess Data
 
 ### Aligning Faces
