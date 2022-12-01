@@ -37,7 +37,7 @@ conda env create -f environment.yml
 
 ## How to Face Swap Video
 and ArcFacePerceptual-Res50.h5 for training
-First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (only ArcFace-Res50.h5 is needed for swapping) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer)(coming soon... ).
+First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (only ArcFace-Res50.h5 is needed for swapping) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer).
 - Put the ArcFace models inside the /arcface_model/ directory.
 - Put the RetinaFace model inside the /retinaface/ directory.
 
@@ -107,6 +107,6 @@ If you use this repository in your work, please cite us:
 ### TODO:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
-- [ ] Provide download links to pretrained models.
+- [x] Provide download links to pretrained models.
 - [ ] Image swap script.
 - [ ] Debugging?
