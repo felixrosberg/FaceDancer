@@ -53,22 +53,45 @@ This will output a manipulated video named swapped_video.mp4
 
 ## Using the Models in Custom script
 ```python
-from networks.layers import AdaptiveAttention, AdaIn
+from networks.layers import AdaIN, AdaptiveAttention
 from tensorflow_addons.layers import InstanceNormalization
 from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
+import cv2
 
-model = load_model("path/to/model.h5", custom_objects={"AdaIN": AdaIN, "AdaptiveAttention": AdaptiveAttention, "InstanceNormalization": InstanceNormalization})
+# To hide "WARNING:root:The given value for groups will be overwritten."
+import logging
+logging.getLogger().setLevel(logging.ERROR)
 
-arcface = load_model("path/to/arcface.h5")
+# To hide very long tensorflow log like:
+# Model: "model"
+# __________________________________________________________________________________________________
+#  Layer (type)                   Output Shape         Param #     Connected to                     
+# ==================================================================================================
+#  input_1 (InputLayer)           [(None, 256, 256, 3  0           []                               
+#
+# Can be added directly to networks/layers.py
+import tensorflow as tf
+tf.keras.utils.disable_interactive_logging()
 
+# Add compile=False to hide
+# "WARNING:tensorflow:No training configuration found in the save file, so the model was *not* compiled. Compile it manually."
+
+model = load_model("path/to/model.h5", compile=False, custom_objects={"AdaIN": AdaIN, "AdaptiveAttention": AdaptiveAttention, "InstanceNormalization": InstanceNormalization})
+arcface = load_model("path/to/arcface.h5", compile=False)
+
+# target and source images need to be properly cropeed and aligned
 target = np.asarray(Image.open("path/to/target_face.png").resize((256, 256)))
 source = np.asarray(Image.open("path/to/source_face.png").resize((112, 112)))
 
 source_z = arcface(np.expand_dims(source / 255.0, axis=0))
 
 face_swap = model([np.expand_dims((target - 127.5) / 127.5, axis=0), source_z]).numpy()
+face_swap = (face_swap[0] + 1) / 2
+face_swap = np.clip(face_swap * 255, 0, 255).astype('uint8')
+
+cv2.imwrite("./swapped_face.png", cv2.cvtColor(face_swap, cv2.COLOR_BGR2RGB))
 ```
 
 The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.
