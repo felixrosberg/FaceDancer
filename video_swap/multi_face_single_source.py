@@ -2,7 +2,7 @@
 # @Author: netrunner-exe
 # @Date:   2022-12-21 12:56:24
 # @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 17:15:23
+# @Last Modified time: 2022-12-21 19:02:28
 import argparse
 import logging
 import sys
@@ -168,7 +168,7 @@ if __name__ == '__main__':
                         default="./arcface_model/ArcFace-Res50.h5",
                         help='Path to arcface model. Used to extract identity from source.')
     parser.add_argument('--facedancer_path', type=str,
-                        default="./model_zoo/FaceDancer-HQ.h5",
+                        default="./model_zoo/FaceDancer_config_c_HQ.h5",
                         help='Path to pretrained FaceDancer model.')
 
     # video / image data to use
