@@ -2,7 +2,7 @@
 # @Author: netrunner-exe
 # @Date:   2022-12-21 12:56:24
 # @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 19:02:28
+# @Last Modified time: 2022-12-21 19:06:34
 import argparse
 import logging
 import sys
@@ -80,12 +80,12 @@ def swap(opt):
     print(opt.output)
 
     if opt.compare:
-        vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'MP4V'),
+        vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'mp4v'),
                                   int(cap.get(cv2.CAP_PROP_FPS)),
                                   (im_shape[0] * 2,
                                    im_shape[1]))
     else:
-        vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'MP4V'),
+        vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'mp4v'),
                                   int(cap.get(cv2.CAP_PROP_FPS)),
                                   (im_shape[0],
                                    im_shape[1]))
