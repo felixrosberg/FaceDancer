@@ -2,7 +2,7 @@
 # @Author: netrunner-exe
 # @Date:   2022-12-21 12:52:01
 # @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 17:01:24
+# @Last Modified time: 2022-12-21 19:14:34
 import logging
 
 import tensorflow as tf
@@ -24,6 +24,7 @@ if __name__ == '__main__':
         gpus = tf.config.experimental.list_physical_devices('GPU')
         tf.config.set_visible_devices(gpus[opt.device_id], 'GPU')
 
+    print('\nInitializing FaceDancer...')
     RetinaFace = load_model(opt.retina_path, compile=False,
                             custom_objects={"FPN": FPN,
                                             "SSH": SSH,
@@ -38,5 +39,7 @@ if __name__ == '__main__':
                                    "InstanceNormalization": InstanceNormalization})
     G.summary()
 
+    print('\nProcessing: {}'.format(opt.img_path))
     run_inference(opt, opt.swap_source, opt.img_path,
                   RetinaFace, ArcFace, G, opt.img_output)
+    print('\nDone! {}'.format(opt.img_output))
