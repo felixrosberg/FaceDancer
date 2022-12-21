@@ -2,7 +2,7 @@
 # @Author: netrunner-exe
 # @Date:   2022-12-21 12:56:24
 # @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 19:06:34
+# @Last Modified time: 2022-12-21 19:07:51
 import argparse
 import logging
 import sys
@@ -77,7 +77,6 @@ def swap(opt):
     detection_scale = (im_w // 640) if (im_w > 640) else 1
 
     vid_out = None
-    print(opt.output)
 
     if opt.compare:
         vid_out = cv2.VideoWriter(opt.output, cv2.VideoWriter_fourcc(*'mp4v'),
