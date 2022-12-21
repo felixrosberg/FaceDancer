@@ -1,17 +1,25 @@
-import tensorflow as tf
+# -*- coding: utf-8 -*-
+# @Author: netrunner-exe
+# @Date:   2022-12-21 12:52:01
+# @Last Modified by:   netrunner-exe
+# @Last Modified time: 2022-12-21 12:53:31
+import math
+
 import numpy as np
 import scipy.signal as sps
 import scipy.special as spspec
-
+import tensorflow as tf
 import tensorflow.keras.backend as K
-import math
-from tensorflow.python.keras.utils import conv_utils
-from tensorflow.keras.layers import Layer, InputSpec, Conv2D, LeakyReLU, Dense, BatchNormalization, Input, Concatenate
-from tensorflow.keras.layers import ReLU, Activation, UpSampling2D, Add, Reshape, Multiply, Embedding
-from tensorflow.keras.layers import MaxPooling2D, Flatten
-from tensorflow.keras import initializers, constraints, regularizers
+from tensorflow.keras import constraints, initializers, regularizers
+from tensorflow.keras.layers import (Activation, Add, BatchNormalization,
+                                     Concatenate, Conv2D, Dense, Embedding,
+                                     Flatten, Input, InputSpec, Layer,
+                                     LeakyReLU, MaxPooling2D, Multiply, ReLU,
+                                     Reshape, UpSampling2D)
 from tensorflow.keras.models import Model
+from tensorflow.python.keras.utils import conv_utils
 
+tf.keras.utils.disable_interactive_logging()
 
 class AdaIN(Layer):
     def __init__(self, **kwargs):
