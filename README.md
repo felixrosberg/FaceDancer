@@ -76,6 +76,8 @@ Download the pretrained ArcFace **[here](https://huggingface.co/felixrosberg/Arc
 
 #
 ### To swap all faces with one source, run:
+> **Warning**
+>#### *Source image with too high resolution may not work properly!*
 #### Video:
 ```shell
 python video_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ.h5" --vid_path "path/to/video.mp4" --swap_source "path/to/source_face.jpg" --output "results/swapped_video.mp4"
@@ -85,6 +87,7 @@ python video_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ
 ```shell
 python image_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ.h5" --img_path "path/to/image.jpg" --swap_source "path/to/source_face.jpg" --output "results/swapped_image.jpg"
 ```
+
 #### *The video or image with swapped faces will be saved in the **./results** directory*
 
 
@@ -120,7 +123,10 @@ face_swap = np.clip(face_swap * 255, 0, 255).astype('uint8')
 
 cv2.imwrite("./swapped_face.png", cv2.cvtColor(face_swap, cv2.COLOR_BGR2RGB))
 ```
-#### *The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.*
+
+
+> **Note**
+>#### *The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.*
 
 
 ## How to Preprocess Data
