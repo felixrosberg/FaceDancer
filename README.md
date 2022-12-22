@@ -91,7 +91,7 @@ pip install tensorflow-gpu
 pip install -r requirements.txt
 ```
 
-
+#### Models:
 Download the pretrained ArcFace **[here](https://huggingface.co/felixrosberg/ArcFace)** (only **ArcFace-Res50.h5** is needed for swapping) and RetinaFace **[here](https://huggingface.co/felixrosberg/RetinaFace)**. Secondly you need to train FaceDancer or **download a pretrained model weights from [here](https://huggingface.co/felixrosberg/FaceDancer)**.
 - Put **ArcFace-Res50.h5** inside the **./arcface_model** dir.
 - Put **RetinaFace-Res50.h5** inside the **./retinaface** dir.
