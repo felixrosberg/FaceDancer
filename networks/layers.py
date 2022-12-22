@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# @Author: netrunner-exe
-# @Date:   2022-12-21 12:52:01
-# @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 12:53:31
 import math
 
 import numpy as np
