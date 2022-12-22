@@ -2,7 +2,7 @@
 # @Author: netrunner-exe
 # @Date:   2022-05-30 11:09:04
 # @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 17:14:41
+# @Last Modified time: 2022-12-22 14:45:11
 import argparse
 
 
@@ -44,8 +44,6 @@ class FaceDancerOptions():
                                  help='Path to output manipulated video.')
         self.parser.add_argument('--img_output', type=str, default="results/swapped_image.jpg",
                                  help='Path to output manipulated image.')
-        self.parser.add_argument('--compare', type=str2bool, default=False, const=False, nargs='?',
-                                 help='If true, concatenates the frame with the manipulated frame.')
         self.parser.add_argument('--align_source', type=str2bool, default=True, const=True, nargs='?',
                                  help='If true, detects the face and aligns it before extracting identity.')
 

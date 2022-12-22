@@ -2,7 +2,7 @@
 # @Author: netrunner-exe
 # @Date:   2022-11-23 09:52:13
 # @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 17:19:56
+# @Last Modified time: 2022-12-22 14:45:19
 import glob
 import os
 import shutil
@@ -99,9 +99,6 @@ def run_inference(opt, source, target, RetinaFace,
             blend_mask = np.expand_dims(blend_mask, axis=-1)
 
             total_img = (iim_aligned * blend_mask + total_img * (1 - blend_mask))
-
-        if opt.compare == True:
-            total_img = np.concatenate((im / 255.0, total_img), axis=1)
 
         total_img = np.clip(total_img * 255, 0, 255).astype('uint8')
 
