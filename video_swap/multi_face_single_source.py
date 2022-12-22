@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# @Author: netrunner-exe
-# @Date:   2022-12-21 12:56:24
-# @Last Modified by:   netrunner-exe
-# @Last Modified time: 2022-12-21 19:07:51
 import argparse
 import logging
 import sys

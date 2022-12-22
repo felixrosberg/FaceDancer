@@ -69,6 +69,29 @@ pip install tensorflow-directml-plugin
 pip install -r requirements.txt
 ```
 
+
+#### An alternative installation method if you have difficulty with the previous:
+- Clone or download repository
+```shell
+git clone https://github.com/felixrosberg/FaceDancer.git
+cd FaceDancer
+```
+
+- Make conda environment
+```shell
+conda create -n facedancer python=3.8
+conda activate facedancer
+python -m pip install --upgrade pip
+```
+
+- Install depencies:
+```shell
+conda install -c conda-forge cudatoolkit cudnn
+pip install tensorflow-gpu
+pip install -r requirements.txt
+```
+
+
 Download the pretrained ArcFace **[here](https://huggingface.co/felixrosberg/ArcFace)** (only **ArcFace-Res50.h5** is needed for swapping) and RetinaFace **[here](https://huggingface.co/felixrosberg/RetinaFace)**. Secondly you need to train FaceDancer or **download a pretrained model weights from [here](https://huggingface.co/felixrosberg/FaceDancer)**.
 - Put **ArcFace-Res50.h5** inside the **./arcface_model** dir.
 - Put **RetinaFace-Res50.h5** inside the **./retinaface** dir.
