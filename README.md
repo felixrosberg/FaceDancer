@@ -1,6 +1,15 @@
-# FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping
+<div align="center">
+
+# <b>FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping</b>
 ![demo_vid_0](assets/133_to_4.gif)
-\[[Arxiv](https://arxiv.org/abs/2210.10473)\] \[WACV 2023](Coming soon...)\]  \[[Video Results](https://drive.google.com/drive/folders/1hHjK0W-Oo1HD6OZb97IdSifPs4_c6NNo?usp=sharing)\]
+
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2210.10473) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)  [![GitHub Stars](https://img.shields.io/github/stars/felixrosberg/FaceDancer?affiliations=OWNER&color=green&style=social)](https://github.com/felixrosberg/FaceDancer) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=felixrosberg/FaceDancer) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/felixrosberg/face-swap) <a href="https://colab.research.google.com/github/felixrosberg/FaceDancer/blob/main/FaceDancer_colab_demo.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
+
+[**WACV 2023**](*Coming soon...*)] [[**Video Results**](https://drive.google.com/drive/folders/1hHjK0W-Oo1HD6OZb97IdSifPs4_c6NNo?usp=sharing)]
+
+</div>
+
+
 ## Abstract
 >In this work, we present a new single-stage method for
 >subject agnostic face swapping and identity transfer, named
@@ -27,58 +36,102 @@ For a quick play around, you can check out a version of FaceDancer hosted on [Hu
 
 ![result_matrix](assets/result_matrix.png)
 
-## Requirements
+## Getting Started
 This project was implemented in TensorFlow 2.X. For evaluation we used models implemented in both TensorFlow and PyTorch (e.g CosFace from [InsightFace](https://github.com/deepinsight/insightface/blob/master/recognition/arcface_torch)).
 
-You can find the exported enviroment in enviroment.yml. Run following command to install the tensorflow enviroment:
+### Installation:
+#### Here is an example of installing FaceDancer on Windows:
+
+- Clone or download repository
 ```shell
-conda env create -f environment.yml
+git clone https://github.com/felixrosberg/FaceDancer.git
+cd FaceDancer
 ```
 
-## How to Face Swap Video
-and ArcFacePerceptual-Res50.h5 for training
-First you need to download the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (only ArcFace-Res50.h5 is needed for swapping) and RetinaFace [here](https://huggingface.co/felixrosberg/RetinaFace). Secondly you need to train FaceDancer or download a pretrained model weights and its structure from [here](https://huggingface.co/felixrosberg/FaceDancer).
-- Put the ArcFace models inside the /arcface_model/ directory.
-- Put the RetinaFace model inside the /retinaface/ directory.
-
-Note: You can put the ArcFace + RetinaFace models where ever you like, but you have to specify the path in the arguments then, as current default arguments points to the aforementioned directories.
-- Put the FaceDancer model somewhere, e.g. pretrained/FaceDancer-C.h5.
-
-To face swap all faces with one source run:
+- Make conda environment
 ```shell
-python video_swap/multi_face_single_source.py --facedancer_path path/to/facedancer.h5 --vid_path path/to/video.mp4 --swap_source path/to/source_face.png
+conda create -n facedancer python=3.8
+conda activate facedancer
+python -m pip install --upgrade pip
 ```
 
-This will output a manipulated video named swapped_video.mp4
+- Download and install [Microsoft Visual C++ for Visual Studio 2015](https://support.microsoft.com/help/2977003/the-latest-supported-visual-c-downloads?utm_source=www.tensorflow.org&utm_medium=referral) (if you not installed it)
+
+- The easiest way to run FaceDancer on GPU is to install **tensorflow-cpu** and **tensorflow-directml-plugin**. if you need only a CPU, then the installation of **tensorflow-directml-plugin** can be skipped. To work with the GPU, the latest Nvidia driver must be installed.
+
+```shell
+pip install tensorflow-cpu==2.10
+pip install tensorflow-directml-plugin
+```
+
+- Install depencies:
+```shell
+pip install -r requirements.txt
+```
+
+
+#### An alternative installation method if you have difficulty with the previous:
+- Clone or download repository
+```shell
+git clone https://github.com/felixrosberg/FaceDancer.git
+cd FaceDancer
+```
+
+- Make conda environment
+```shell
+conda create -n facedancer python=3.8
+conda activate facedancer
+python -m pip install --upgrade pip
+```
+
+- Install depencies:
+```shell
+conda install -c conda-forge cudatoolkit cudnn
+pip install tensorflow-gpu
+pip install -r requirements.txt
+```
+
+#### Models:
+Download the pretrained ArcFace **[here](https://huggingface.co/felixrosberg/ArcFace)** (only **ArcFace-Res50.h5** is needed for swapping) and RetinaFace **[here](https://huggingface.co/felixrosberg/RetinaFace)**. Secondly you need to train FaceDancer or **download a pretrained model weights from [here](https://huggingface.co/felixrosberg/FaceDancer)**.
+- Put **ArcFace-Res50.h5** inside the **./arcface_model** dir.
+- Put **RetinaFace-Res50.h5** inside the **./retinaface** dir.
+- Put downloaded pretrained models inside the **./model_zoo** dir.
+
+#
+### To swap all faces with one source, run:
+> **Warning**
+>#### *Source image with too high resolution may not work properly!*
+#### Video:
+```shell
+python test_video_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ.h5" --vid_path "path/to/video.mp4" --swap_source "path/to/source_face.jpg" --vid_output "results/swapped_video.mp4"
+```
+
+#### Image:
+```shell
+python test_image_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ.h5" --img_path "path/to/image.jpg" --swap_source "path/to/source_face.jpg" --img_output "results/swapped_image.jpg"
+```
+
+#### *The video or image with swapped faces will be saved in the **./results** directory*
+
 
 ## Using the Models in Custom script
 ```python
-from networks.layers import AdaIN, AdaptiveAttention
-from tensorflow_addons.layers import InstanceNormalization
-from tensorflow.keras.models import load_model
-from PIL import Image
-import numpy as np
-import cv2
-
-# To hide "WARNING:root:The given value for groups will be overwritten."
 import logging
+
+import cv2
+import numpy as np
+from PIL import Image
+from tensorflow.keras.models import load_model
+from tensorflow_addons.layers import InstanceNormalization
+
+from networks.layers import AdaIN, AdaptiveAttention
+
 logging.getLogger().setLevel(logging.ERROR)
 
-# To hide very long tensorflow log like:
-# Model: "model"
-# __________________________________________________________________________________________________
-#  Layer (type)                   Output Shape         Param #     Connected to                     
-# ==================================================================================================
-#  input_1 (InputLayer)           [(None, 256, 256, 3  0           []                               
-#
-# Can be added directly to networks/layers.py
-import tensorflow as tf
-tf.keras.utils.disable_interactive_logging()
 
-# Add compile=False to hide
-# "WARNING:tensorflow:No training configuration found in the save file, so the model was *not* compiled. Compile it manually."
-
-model = load_model("path/to/model.h5", compile=False, custom_objects={"AdaIN": AdaIN, "AdaptiveAttention": AdaptiveAttention, "InstanceNormalization": InstanceNormalization})
+model = load_model("path/to/model.h5", compile=False, custom_objects={"AdaIN": AdaIN,
+                                                                      "AdaptiveAttention": AdaptiveAttention,
+                                                                      "InstanceNormalization": InstanceNormalization})
 arcface = load_model("path/to/arcface.h5", compile=False)
 
 # target and source images need to be properly cropeed and aligned
@@ -94,7 +147,10 @@ face_swap = np.clip(face_swap * 255, 0, 255).astype('uint8')
 cv2.imwrite("./swapped_face.png", cv2.cvtColor(face_swap, cv2.COLOR_BGR2RGB))
 ```
 
-The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.
+
+> **Note**
+>#### *The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.*
+
 
 ## How to Preprocess Data
 
@@ -107,10 +163,10 @@ python dataset/crop_align.py --data_dir path/to/DATASET --target_dir path/to/pro
 ```
 
 Remaining arguments consist of:
-- --im_size, default=256, final image size of the processed image
-- --min_size, defualt=128, threshold to ignore image with a width or height lower than min_size
-- --shrink_factor, defualt=1.0, this argument controls how much of the background to keep. Default is 1.0 which produces images appropriate as direct input into ArcFace. If the shrink factor is e.g 0.75, you must center crop the image, keeping 0.75% of the image, before inputting into ArcFace.
-- --device_id, default=0, which device to use
+- **--device_id, default=0** - *Which device to use.*
+- **--im_size, default=256** - *Final image size of the processed image.*
+- **--min_size, default=128** - *Threshold to ignore image with a width or height lower than min_size.*
+- **--shrink_factor, default=1.0** - *This argument controls how much of the background to keep. Default is 1.0 which produces images appropriate as direct input into ArcFace. If the shrink factor is e.g 0.75, you must center crop the image, keeping 0.75% of the image, before inputting into ArcFace.*
 
 ### Sharding the Data
 This step will convert the image data to tfrecords. If using large datasets such as VGGFace2 this will take some time. However, the training code is designed around this step and it speeds up training significantly. The expected folder structure is DATASET/subfolders/im_0, ..., im_x. If using an image dataset not divided into subfolders you can put the DATASET folder inside a parent folder like this: PARENT_FOLDER/DATASET/im_0, ..., im_x. Then specify the PARENT_FOLDER as the --data_dir and the DATASET will be treated as a subfolder.
@@ -121,22 +177,30 @@ python dataset/dataset_sharding.py --data_dir path/to/DATASET --target_dir path/
 ```
 
 Remaining arguments consist of:
-- --data_type, default="train", identifier for the output file names
-- --shuffle, defualt=True, where to shuffle the order of sharding the images
-- --num_shards, defualt=1000, how many shards to divide the data into
+- **--data_type, default="train"** - *Identifier for the output file names.*
+- **--shuffle, default=True** - *Where to shuffle the order of sharding the images.*
+- **--num_shards, default=1000** - *How many shards to divide the data into.*
 
 ## How to Train
-After you have processed and sharded all your desired datasets, you can train a version of FaceDancer. You still need to the pretrained ArcFace [here](https://huggingface.co/felixrosberg/ArcFace) (both ArcFace-Res50.h5 and ArcFacePerceptual-Res50 is needed). Secondly you need to the expression embedding model used for a rough estimation [here](https://huggingface.co/felixrosberg/ExpressionEmbedder). Put the .h5 files into arcface_model/arcface/ and arcface_model/expface/ respectively and you should need to specify the path in arguments. The trining scipt has the IFSR margins built-in into the default field of its argument. The training and validation data path uses a specific format: C:/path/to/tfrecords/train/DATASET-NAME_DATA-TYPE_\*-of-\*.records, where DATASET-NAME and DATA-TYPE is the arguments specified in the sharding. For example, DATASET-NAME=vggface2 and DATA-TYPE=train: C:/path/to/tfrecords/train/vggface2_train_\*-of-\*.records.
+After you have processed and sharded all your desired datasets, you can train a version of FaceDancer. You still need to the pretrained ArcFace **[here](https://huggingface.co/felixrosberg/ArcFace)** (both **ArcFace-Res50.h5** and **ArcFacePerceptual-Res50** is needed). Secondly you need to the expression embedding model used for a rough estimation **[here](https://huggingface.co/felixrosberg/ExpressionEmbedder)**. Put the *.h5* files into **arcface_model/arcface** and **arcface_model/expface** respectively and you should need to specify the path in arguments. The training scipt has the IFSR margins built-in into the default field of its argument. The training and validation data path uses a specific format: C:/path/to/tfrecords/train/DATASET-NAME_DATA-TYPE_\*-of-\*.records, where DATASET-NAME and DATA-TYPE is the arguments specified in the sharding. For example, DATASET-NAME=vggface2 and DATA-TYPE=train: C:/path/to/tfrecords/train/vggface2_train_\*-of-\*.records.
 
 To train run:
 ```shell
 python train/train.py --data_dir C:/path/to/tfrecords/train/dataset_train_*-of-*.records --eval_dir C:/path/to/tfrecords/val/dataset_val_*-of-*.records
 ```
 
-You can monitor the training with tensorboard. The train.py script will automatically log losses and images into logs/runs/facdancer/ unless you specify a different log directory and/or log name (facedancer is the default log name). Checkpoints will automatically be saved into checkpoints/ directory unless you specify a different directory. The checkpointing saves the model structures to .json and the weights to .h5 files. If you want the complete model in a single .h5 file you can rerun train.py with --load XX and --export True. This will save the complete model as a .h5 file in exports/facedancer/. XX is the checkpoint weight identifier, which can be found if you go to your checkpoints directory and for example, look up gen/gen_XX.h5.
+You can monitor the training with tensorboard. The `train.py` script will automatically log losses and images into logs/runs/facdancer unless you specify a different log directory and/or log name (facedancer is the default log name). Checkpoints will automatically be saved into ./checkpoints directory unless you specify a different directory. The checkpointing saves the model structures to *.json* and the weights to *.h5* files. If you want the complete model in a single *.h5* file you can rerun `train.py` with **--load XX** and **--export True**. This will save the complete model as a *.h5* file in **exports/facedancer**. XX is the checkpoint weight identifier, which can be found if you go to your checkpoints directory and for example, look up gen/gen_XX.h5.
+
 
 ## PyTorch Implementation
 Currently I am working on a PyTorch version of FaceDancer. The training and network code is kind of done. Currently the behaviour compare to TensorFlow is drastically different. Some interesting notes is that the mapping network does not allow for the FaceDancer to learn its task. In current state it provides decent results with the mapping network ommited. I will post the PyTorch version as soon as these issues is diagnosed and resolved.
+
+
+## License
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+
+**FaceDancer** is licensed under [Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 
 ## Citation
 If you use this repository in your work, please cite us:
@@ -153,5 +217,5 @@ If you use this repository in your work, please cite us:
 - [ ] Add complete code for calculating IFSR.
 - [ ] Add code for all evaluation steps.
 - [x] Provide download links to pretrained models.
-- [ ] Image swap script.
+- [x] Image swap script.
 - [ ] Debugging?

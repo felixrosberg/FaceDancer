@@ -1,0 +1,9 @@
+tensorflow-addons
+opencv-python-headless
+scipy
+scikit-image
+moviepy==1.0.3
+imageio
+imageio-ffmpeg
+requests
+tqdm
