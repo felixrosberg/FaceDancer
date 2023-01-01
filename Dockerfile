@@ -22,7 +22,3 @@ RUN pip install tensorflow
 RUN pip install opencv-python==4.5.5.64
 
 ENTRYPOINT ["python", "api.py"]
-
-
-# docker build --rm -t faceswap .
-# docker run --gpus all --rm -it -p 8973:8000 -v $(pwd)/results:/workspace/results faceswap
