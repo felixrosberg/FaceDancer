@@ -196,6 +196,14 @@ You can monitor the training with tensorboard. The `train.py` script will automa
 Currently I am working on a PyTorch version of FaceDancer. The training and network code is kind of done. Currently the behaviour compare to TensorFlow is drastically different. Some interesting notes is that the mapping network does not allow for the FaceDancer to learn its task. In current state it provides decent results with the mapping network ommited. I will post the PyTorch version as soon as these issues is diagnosed and resolved.
 
 
+## Docker 
+  * build:
+  ```docker build --rm -t faceswap .```
+  
+  * run:
+  ```docker run --gpus all --rm -it -p 8973:8000 -v $(pwd)/results:/workspace/results faceswap```
+  
+  
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
 
