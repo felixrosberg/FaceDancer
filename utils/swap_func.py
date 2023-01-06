@@ -10,25 +10,10 @@ from moviepy.editor import AudioFileClip, VideoFileClip
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from scipy.ndimage import gaussian_filter
 from tqdm import tqdm
+import subprocess
 
 from utils.utils import (estimate_norm, get_lm, inverse_estimate_norm,
                          norm_crop, transform_landmark_points)
-
-
-class suppress_con_output(object):
-    def __init__(self):
-        self.null_fds = [os.open(os.devnull, os.O_RDWR) for x in range(2)]
-        self.save_fds = [os.dup(1), os.dup(2)]
-
-    def __enter__(self):
-        os.dup2(self.null_fds[0], 1)
-        os.dup2(self.null_fds[1], 2)
-
-    def __exit__(self, *_):
-        os.dup2(self.save_fds[0], 1)
-        os.dup2(self.save_fds[1], 2)
-        for fd in self.null_fds + self.save_fds:
-            os.close(fd)
 
 
 def run_inference(opt, source, target, RetinaFace,
@@ -69,12 +54,7 @@ def run_inference(opt, source, target, RetinaFace,
         total_img = im / 255.0
 
         for annotation in faces:
-            lm_align = np.array([[annotation[4] * im_w, annotation[5] * im_h],
-                                 [annotation[6] * im_w, annotation[7] * im_h],
-                                 [annotation[8] * im_w, annotation[9] * im_h],
-                                 [annotation[10] * im_w, annotation[11] * im_h],
-                                 [annotation[12] * im_w, annotation[13] * im_h]],
-                                dtype=np.float32)
+            lm_align = get_lm(annotation, im_w, im_h)
 
             # align the detected face
             M, pose_index = estimate_norm(lm_align, 256, "arcface", shrink_factor=1.0)
@@ -146,16 +126,46 @@ def video_swap(opt, face, input_video, RetinaFace, ArcFace, FaceDancer, out_vide
     path = os.path.join('./tmp_frames', '*.png')
     image_filenames = sorted(glob.glob(path))
     clips = ImageSequenceClip(image_filenames, fps=fps)
+    name = os.path.splitext(out_video_filename)[0]
 
     if not no_audio:
         clips = clips.set_audio(video_audio_clip)
 
-    try:
-        clips.write_videofile(out_video_filename, codec='libx264', audio_codec='aac', ffmpeg_params=[
-            '-pix_fmt:v', 'yuv420p', '-colorspace:v', 'bt709', '-color_primaries:v', 'bt709',
-            '-color_trc:v', 'bt709', '-color_range:v', 'tv', '-movflags', '+faststart'],
-                              logger=proglog.TqdmProgressBarLogger(print_messages=False))
-    except:
-        sys.exit(0)
+    if out_video_filename.lower().endswith('.gif'):
+        print("\nCreating GIF with FFmpeg...")
+        try:
+           subprocess.run('ffmpeg -y -v -8 -f image2 -framerate {} \
+               -i "./tmp_frames/frame_%07d.png" -filter_complex "[0:v]split [a][b];[a] \
+                   palettegen=stats_mode=single [p];[b][p]paletteuse=dither=bayer:bayer_scale=4" \
+                       -y "{}.gif"'.format(fps, name), shell=True, check=True)
+           print("\nGIF created: {}".format(out_video_filename))
 
-    print('\nDone! {}'.format(out_video_filename))
+        except subprocess.CalledProcessError:
+            print("\nERROR! Failed to export GIF with FFmpeg")
+            print('\n', sys.exc_info())
+            sys.exit(0)
+
+    elif out_video_filename.lower().endswith('.webp'):
+        try:
+            print("\nCreating WEBP with FFmpeg...")
+            subprocess.run('ffmpeg -y -v -8 -f image2 -framerate {} \
+                -i "./tmp_frames/frame_%07d.png" -vcodec libwebp -lossless 0 -q:v 80 -loop 0 -an -vsync 0 \
+                    "{}.webp"'.format(fps, name), shell=True, check=True)
+            print("\nWEBP created: {}".format(out_video_filename))
+
+        except subprocess.CalledProcessError:
+            print("\nERROR! Failed to export WEBP with FFmpeg")
+            print('\n', sys.exc_info())
+            sys.exit(0)
+    else:
+        try:
+            clips.write_videofile(out_video_filename, codec='libx264', audio_codec='aac', ffmpeg_params=[
+                '-pix_fmt:v', 'yuv420p', '-colorspace:v', 'bt709', '-color_primaries:v', 'bt709',
+                '-color_trc:v', 'bt709', '-color_range:v', 'tv', '-movflags', '+faststart'],
+                                  logger=proglog.TqdmProgressBarLogger(print_messages=False))
+        except Exception as e:
+            print("\nERROR! Failed to export video")
+            print('\n', e)
+            sys.exit(0)
+
+        print('\nDone! {}'.format(out_video_filename))

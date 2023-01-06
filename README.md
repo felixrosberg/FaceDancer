@@ -10,6 +10,14 @@
 </div>
 
 
+#### 🚩 Updates:
+#### **03.01.2023:**
+
+
+- Minor code improvements. Fixed ```No module named 'retinaface.models'``` error (thanks to [kambiannan](https://github.com/kambiannan)).
+- Added ability to use a GIF as an input file and export the final result to GIF or WEBP. For more information, check the updated [installation guide](https://github.com/felixrosberg/FaceDancer#installation).
+
+
 ## Abstract
 >In this work, we present a new single-stage method for
 >subject agnostic face swapping and identity transfer, named
@@ -60,6 +68,8 @@ python -m pip install --upgrade pip
 - The easiest way to run FaceDancer on GPU is to install **tensorflow-cpu** and **tensorflow-directml-plugin**. if you need only a CPU, then the installation of **tensorflow-directml-plugin** can be skipped. To work with the GPU, the latest Nvidia driver must be installed.
 
 ```shell
+conda install -c conda-forge ffmpeg
+
 pip install tensorflow-cpu==2.10
 pip install tensorflow-directml-plugin
 ```
@@ -87,6 +97,8 @@ python -m pip install --upgrade pip
 - Install depencies:
 ```shell
 conda install -c conda-forge cudatoolkit cudnn
+conda install -c conda-forge ffmpeg
+
 pip install tensorflow-gpu
 pip install -r requirements.txt
 ```
@@ -111,7 +123,19 @@ python test_video_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config
 python test_image_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ.h5" --img_path "path/to/image.jpg" --swap_source "path/to/source_face.jpg" --img_output "results/swapped_image.jpg"
 ```
 
-#### *The video or image with swapped faces will be saved in the **./results** directory*
+
+#### GIF:
+```shell
+python test_video_swap_multi.py --facedancer_path "./model_zoo/FaceDancer_config_c_HQ.h5" --vid_path "path/to/GIF_or_MP4.gif" --swap_source "path/to/source_face.jpg" --vid_output "results/swapped_GIF_or_WEBP.gif"
+```
+
+
+> **Note**
+>
+> *You can use video or GIF as input file, so that the final file will be in GIF or WEBP format, just change the extension in **--vid_output** to **.gif** or **.webp**.*
+
+
+#### *The video, GIF or image with swapped faces will be saved in the **./results** directory*
 
 
 ## Using the Models in Custom script
@@ -149,7 +173,8 @@ cv2.imwrite("./swapped_face.png", cv2.cvtColor(face_swap, cv2.COLOR_BGR2RGB))
 
 
 > **Note**
->#### *The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.*
+>
+> *The important part is that you need ArcFace as well and make sure the target image is normalized between -1 and 1, and the source between 0 and 1.*
 
 
 ## How to Preprocess Data
