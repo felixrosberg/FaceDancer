@@ -195,7 +195,7 @@ Remaining arguments consist of:
 - **--device_id, default=0** - *Which device to use.*
 - **--im_size, default=256** - *Final image size of the processed image.*
 - **--min_size, default=128** - *Threshold to ignore image with a width or height lower than min_size.*
-- **--shrink_factor, default=1.0** - *This argument controls how much of the background to keep. Default is 1.0 which produces images appropriate as direct input into ArcFace. If the shrink factor is e.g 0.75, you must center crop the image, keeping 0.75% of the image, before inputting into ArcFace.*
+- **--shrink_factor, default=1.0** - *This argument controls how much of the background to keep. Default is 1.0 which produces images appropriate as direct input into ArcFace. If the shrink factor is e.g 0.75, you must center crop the image, keeping 75% of the image, before inputting into ArcFace.*
 
 ### Sharding the Data
 This step will convert the image data to tfrecords. If using large datasets such as VGGFace2 this will take some time. However, the training code is designed around this step and it speeds up training significantly. The expected folder structure is DATASET/subfolders/im_0, ..., im_x. If using an image dataset not divided into subfolders you can put the DATASET folder inside a parent folder like this: PARENT_FOLDER/DATASET/im_0, ..., im_x. Then specify the PARENT_FOLDER as the --data_dir and the DATASET will be treated as a subfolder.
