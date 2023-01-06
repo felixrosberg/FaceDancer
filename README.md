@@ -11,6 +11,10 @@
 
 
 #### 🚩 Updates:
+#### **06.01.2023:**
+
+
+- Dockerfile and API examples provided by [AliYqb](https://github.com/AliYqb)).
 #### **03.01.2023:**
 
 
