@@ -242,11 +242,13 @@ Currently I am working on a PyTorch version of FaceDancer. The training and netw
 ## Citation
 If you use this repository in your work, please cite us:
 ```
-@inproceedings{Rosberg2023FaceDancer,
-  title     = {FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping},
-  author    = {F. Rosberg, E. Aksoy. C. Englund, F. Alonso-Fernandez},
-  booktitle = {Proc. IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
-  year      = {2023}
+@InProceedings{Rosberg_2023_WACV,
+    author    = {Rosberg, Felix and Aksoy, Eren Erdal and Alonso-Fernandez, Fernando and Englund, Cristofer},
+    title     = {FaceDancer: Pose- and Occlusion-Aware High Fidelity Face Swapping},
+    booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+    month     = {January},
+    year      = {2023},
+    pages     = {3454-3463}
 }
 ```
 
