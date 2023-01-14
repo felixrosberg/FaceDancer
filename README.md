@@ -5,7 +5,7 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2210.10473) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)  [![GitHub Stars](https://img.shields.io/github/stars/felixrosberg/FaceDancer?affiliations=OWNER&color=green&style=social)](https://github.com/felixrosberg/FaceDancer) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=felixrosberg/FaceDancer) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/felixrosberg/face-swap) <a href="https://colab.research.google.com/github/felixrosberg/FaceDancer/blob/main/FaceDancer_colab_demo.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
 
-[**WACV 2023**](*Coming soon...*)] [[**Video Results**](https://drive.google.com/drive/folders/1hHjK0W-Oo1HD6OZb97IdSifPs4_c6NNo?usp=sharing)]
+[[**WACV 2023**](https://openaccess.thecvf.com/content/WACV2023/html/Rosberg_FaceDancer_Pose-_and_Occlusion-Aware_High_Fidelity_Face_Swapping_WACV_2023_paper.html)] [[**Video Results**](https://drive.google.com/drive/folders/1hHjK0W-Oo1HD6OZb97IdSifPs4_c6NNo?usp=sharing)]
 
 </div>
 
