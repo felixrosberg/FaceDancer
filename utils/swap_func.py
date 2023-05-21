@@ -159,8 +159,10 @@ def video_swap(opt, face, input_video, RetinaFace, ArcFace, FaceDancer, out_vide
             sys.exit(0)
     else:
         try:
+            # .h264 needs even dimensions so added filter will do the steps mentioned in the following link
+            # https://stackoverflow.com/a/20848224/9969425
             clips.write_videofile(out_video_filename, codec='libx264', audio_codec='aac', ffmpeg_params=[
-                '-pix_fmt:v', 'yuv420p', '-colorspace:v', 'bt709', '-color_primaries:v', 'bt709',
+                '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2', '-pix_fmt:v', 'yuv420p', '-colorspace:v', 'bt709', '-color_primaries:v', 'bt709',
                 '-color_trc:v', 'bt709', '-color_range:v', 'tv', '-movflags', '+faststart'],
                                   logger=proglog.TqdmProgressBarLogger(print_messages=False))
         except Exception as e:
