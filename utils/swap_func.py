@@ -169,3 +169,5 @@ def video_swap(opt, face, input_video, RetinaFace, ArcFace, FaceDancer, out_vide
             sys.exit(0)
 
         print('\nDone! {}'.format(out_video_filename))
+        # Delete temporary frames after completion
+        shutil.rmtree(temp_results_dir)
